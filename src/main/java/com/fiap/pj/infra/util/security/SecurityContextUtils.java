@@ -16,9 +16,8 @@ public class SecurityContextUtils {
     }
 
     public static UUID getUsuarioId() {
-        if (getAuthentication().getPrincipal() instanceof UserDetailsImpl) {
-            UserDetailsImpl user = (UserDetailsImpl) getAuthentication().getPrincipal();
-            return user.getId();
+        if (getAuthentication().getPrincipal() instanceof UserDetailsImpl userDetails) {
+            return userDetails.getId();
         }
 
         return null;
