@@ -8,6 +8,3 @@ management:
   health:
     mail:
       enabled: false
-
-email:
-  enabled: false

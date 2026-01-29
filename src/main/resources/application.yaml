@@ -46,27 +46,14 @@ spring:
         max-page-size: 50
         default-page-size: 10
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: oficina.mecanica.tech.fiap@gmail.com
-    password: ${SMTP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl.trust: smtp.gmail.com
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
-
   autoconfigure:
     exclude:
       - org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration
+
+  rabbitmq:
+    addresses: amqps://qvmoypwp:svWftB5y5T6iGqSHLCXLh9Zu51OhaTri@moose.rmq.cloudamqp.com/qvmoypwp
 
 springdoc:
   default-produces-media-type: application/json
@@ -112,8 +99,9 @@ management:
       probes:
         enabled: true
 
-email:
-  enabled: true
+broker:
+  queue:
+    email: default.email
 
 
 server:

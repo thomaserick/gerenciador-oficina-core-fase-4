@@ -1,11 +1,8 @@
 package com.fiap.pj.core.email.app.gateways;
 
-import com.fiap.pj.core.email.domain.EmailTemplate;
-import com.fiap.pj.core.email.domain.enums.Template;
-
-import java.util.Optional;
+import com.fiap.pj.core.email.domain.EmailMessage;
 
 public interface EmailGateway {
 
-    Optional<EmailTemplate> buscarTemplate(Template template);
+    void dispatch(EmailMessage message);
 }
