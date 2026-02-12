@@ -2,6 +2,7 @@ package com.fiap.pj.core.ordemservico.domain;
 
 import com.fiap.pj.core.orcamento.domain.Orcamento;
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
+import com.fiap.pj.core.ordemservico.domain.enums.PagamentoStatus;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoStatusInvalidoAguardandoAprovacaoException;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoStatusInvalidoAguardandoRetiradaException;
 import com.fiap.pj.core.ordemservico.exception.OrdemServicoExceptions.OrdemServicoStatusInvalidoDiagnosticoException;
@@ -13,11 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -41,6 +42,7 @@ public class OrdemServico {
     private Diagnostico diagnostico;
     private Set<SituacaoOrdemServico> historicoSituacao = new HashSet<>();
     private Set<Orcamento> orcamentos = new HashSet<>();
+    private PagamentoStatus pagamentoStatus;
 
     @Builder
     public OrdemServico(
@@ -56,53 +58,53 @@ public class OrdemServico {
         this.status = status;
         this.dataCriacao = DateTimeUtils.getNow();
         this.dataConclusao = DateTimeUtils.getNow().plusDays(1);
+        this.pagamentoStatus = PagamentoStatus.NAO_INICIADO;
     }
 
-    public void moverEmDiagnostico() {
+    public void moverParaEmDiagnostico() {
         if (!OrdemServicoStatus.CRIADA.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoDiagnosticoException();
         }
         novaSituacao(EM_DIAGNOSTICO);
     }
 
-    public void moverAguardandoAprovacao() {
+    public void moverParaAguardandoAprovacao() {
         if (!OrdemServicoStatus.EM_DIAGNOSTICO.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoAguardandoAprovacaoException();
         }
         novaSituacao(AGUARDANDO_APROVACAO);
     }
 
-    public void moverEmExecucao() {
+    public void moverParaEmExecucao() {
         if (OrdemServicoStatus.AGUARDANDO_APROVACAO.equals(this.status) ||
                 OrdemServicoStatus.EM_DIAGNOSTICO.equals(this.status)) {
             novaSituacao(EM_EXECUCAO);
         } else {
             throw new OrdemServicoStatusInvalidoEmExecucaoException();
         }
-
+        this.pagamentoStatus = PagamentoStatus.AGUARDANDO_PAGAMENTO;
     }
 
-    public void moverFinalizada() {
+    public void moverParaFinalizada() {
         if (!OrdemServicoStatus.EM_EXECUCAO.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoFinalizadaException();
         }
         novaSituacao(FINALIZADA);
     }
 
-    public void moverAguardandoRetirada() {
+    public void moverParaAguardandoRetirada() {
         if (!FINALIZADA.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoAguardandoRetiradaException();
         }
-
         novaSituacao(OrdemServicoStatus.AGUARDANDO_RETIRADA);
     }
 
-    public void moverEntregue() {
-        if (!OrdemServicoStatus.AGUARDANDO_RETIRADA.equals(this.status)) {
+    public void moverParaEntregue() {
+        if (!OrdemServicoStatus.AGUARDANDO_RETIRADA.equals(this.status) && !FINALIZADA.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoEntregueException();
         }
-
         novaSituacao(OrdemServicoStatus.ENTREGUE);
+        this.pagamentoStatus = PagamentoStatus.PAGO;
     }
 
     public void realizarDiagnostico(String descricao) {
@@ -133,4 +135,16 @@ public class OrdemServico {
     }
 
 
+    public void processarPagamento() {
+        if (!FINALIZADA.equals(this.status)) {
+            throw new OrdemServicoStatusInvalidoFinalizadaException();
+        }
+        this.pagamentoStatus = PagamentoStatus.PROCESSANDO;
+    }
+
+    public BigDecimal getValorTotal() {
+        return this.getOrcamentos().stream()
+                .map(Orcamento::getValorTotal)
+                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+    }
 }

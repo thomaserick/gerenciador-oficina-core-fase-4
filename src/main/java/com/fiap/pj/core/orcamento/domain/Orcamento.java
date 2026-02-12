@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -89,5 +90,10 @@ public class Orcamento {
 
     public void vincularOrdemServico(UUID ordemServicoId) {
         this.ordemServicoId = requireNonNull(ordemServicoId);
+    }
+
+    public BigDecimal getValorTotal() {
+        BigDecimal totalPecasInsumo = this.getPecasInsumos().stream().map(OrcamentoItemPecaInsumo::valorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return this.getServicos().stream().map(OrcamentoItemServico::valorTotal).reduce(BigDecimal.ZERO, BigDecimal::add).add(totalPecasInsumo);
     }
 }

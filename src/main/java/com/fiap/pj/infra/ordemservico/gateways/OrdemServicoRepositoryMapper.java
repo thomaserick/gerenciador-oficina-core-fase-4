@@ -20,6 +20,7 @@ public class OrdemServicoRepositoryMapper {
                 .diagnostico(DiagnosticoRepositoryMapper.mapToTable(ordemServico.getDiagnostico()))
                 .historicoSituacao(SituacaoOrdemServicoRepositoryMapper.mapToTableSet(ordemServico.getHistoricoSituacao()))
                 .orcamentos(OrcamentoRepositoryMapper.mapToTableSet(ordemServico.getOrcamentos()))
+                .pagamentoStatus(ordemServico.getPagamentoStatus())
                 .build();
     }
 
@@ -33,8 +34,7 @@ public class OrdemServicoRepositoryMapper {
                 entity.getDataConclusao(),
                 DiagnosticoRepositoryMapper.mapToDomain(entity.getDiagnostico()),
                 SituacaoOrdemServicoRepositoryMapper.mapToDomainSet(entity.getHistoricoSituacao()),
-                OrcamentoRepositoryMapper.mapToDomainSet(entity.getOrcamentos())
-        );
+                OrcamentoRepositoryMapper.mapToDomainSet(entity.getOrcamentos()), entity.getPagamentoStatus());
 
     }
 

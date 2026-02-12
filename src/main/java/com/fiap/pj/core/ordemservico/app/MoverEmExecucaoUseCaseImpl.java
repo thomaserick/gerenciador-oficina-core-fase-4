@@ -35,9 +35,9 @@ public class MoverEmExecucaoUseCaseImpl implements MoverEmExecucaoUseCase {
     public void handle(UUID id) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(id).orElseThrow(OrdemServicoNaoEncontradaException::new);
         var dataCriacaoStatusAtual = ordemServico.getDataCriacaoStatusAtual();
-        ordemServico.moverEmExecucao();
+        ordemServico.moverParaEmExecucao();
         this.ordemServicoGateway.salvar(ordemServico);
-        registrarStatusOrdemServicoUseCase.handle(new RegistrarStatusOrdemServicoCommand(ordemServico,dataCriacaoStatusAtual));
+        registrarStatusOrdemServicoUseCase.handle(new RegistrarStatusOrdemServicoCommand(ordemServico, dataCriacaoStatusAtual));
         this.enviarEmail(ordemServico);
     }
 

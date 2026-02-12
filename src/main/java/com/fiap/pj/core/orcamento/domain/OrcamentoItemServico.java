@@ -28,4 +28,8 @@ public class OrcamentoItemServico {
         this.valorUnitario = valorUnitario;
         this.quantidade = quantidade;
     }
+
+    public BigDecimal valorTotal() {
+        return this.getValorUnitario().multiply(new BigDecimal(this.getQuantidade()));
+    }
 }

@@ -1,6 +1,7 @@
 package com.fiap.pj.infra.ordemservico.persistence;
 
 import com.fiap.pj.core.ordemservico.domain.enums.OrdemServicoStatus;
+import com.fiap.pj.core.ordemservico.domain.enums.PagamentoStatus;
 import com.fiap.pj.infra.cliente.persistence.ClienteEntity;
 import com.fiap.pj.infra.orcamento.persistence.OrcamentoEntity;
 import com.fiap.pj.infra.usuario.persistence.UsuarioEntity;
@@ -68,11 +69,14 @@ public class OrdemServicoEntity {
     @JoinColumn(name = "ordemServicoId", insertable = false, updatable = false)
     private Set<OrcamentoEntity> orcamentos = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private PagamentoStatus pagamentoStatus;
+
 
     @Builder
     public OrdemServicoEntity(UUID id, UUID clienteId, UUID veiculoId, UUID usuarioId, OrdemServicoStatus status, ZonedDateTime dataCriacao,
                               ZonedDateTime dataConclusao, ClienteEntity cliente, VeiculoEntity veiculo, UsuarioEntity usuario,
-                              DiagnosticoEntity diagnostico, Set<SituacaoOrdemServicoEntity> historicoSituacao, Set<OrcamentoEntity> orcamentos) {
+                              DiagnosticoEntity diagnostico, Set<SituacaoOrdemServicoEntity> historicoSituacao, Set<OrcamentoEntity> orcamentos, PagamentoStatus pagamentoStatus) {
         this.id = id;
         this.clienteId = clienteId;
         this.veiculoId = veiculoId;
@@ -86,5 +90,6 @@ public class OrdemServicoEntity {
         this.diagnostico = diagnostico;
         this.historicoSituacao = historicoSituacao;
         this.orcamentos = orcamentos;
+        this.pagamentoStatus = pagamentoStatus;
     }
 }

@@ -31,7 +31,7 @@ public class MoverAguardandoRetiradaUseCaseImpl implements MoverAguardandoRetira
     @Override
     public void handle(UUID id) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(id).orElseThrow(OrdemServicoNaoEncontradaException::new);
-        ordemServico.moverAguardandoRetirada();
+        ordemServico.moverParaAguardandoRetirada();
         this.ordemServicoGateway.salvar(ordemServico);
 
         this.enviarEmail(ordemServico);

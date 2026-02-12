@@ -31,7 +31,7 @@ public class MoverEntregueUseCaseImpl implements MoverEntregueUseCase {
     @Override
     public void handle(UUID id) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(id).orElseThrow(OrdemServicoNaoEncontradaException::new);
-        ordemServico.moverEntregue();
+        ordemServico.moverParaEntregue();
 
         this.ordemServicoGateway.salvar(ordemServico);
 

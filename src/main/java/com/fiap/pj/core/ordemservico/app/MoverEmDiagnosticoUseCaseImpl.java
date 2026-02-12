@@ -36,10 +36,10 @@ public class MoverEmDiagnosticoUseCaseImpl implements MoverEmDiagnosticoUseCase 
     public void handle(UUID id) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(id).orElseThrow(OrdemServicoNaoEncontradaException::new);
         var dataCriacaoStatusAtual = ordemServico.getDataCriacaoStatusAtual();
-        ordemServico.moverEmDiagnostico();
+        ordemServico.moverParaEmDiagnostico();
 
         this.ordemServicoGateway.salvar(ordemServico);
-        registrarStatusOrdemServicoUseCase.handle(new RegistrarStatusOrdemServicoCommand(ordemServico,dataCriacaoStatusAtual));
+        registrarStatusOrdemServicoUseCase.handle(new RegistrarStatusOrdemServicoCommand(ordemServico, dataCriacaoStatusAtual));
         this.enviarEmail(ordemServico);
     }
 

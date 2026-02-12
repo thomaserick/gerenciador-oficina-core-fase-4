@@ -31,7 +31,7 @@ public class MoverAguardandoAprovacaoUseCaseImpl implements AlterarStatusOsAguar
     @Override
     public void handle(UUID id) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(id).orElseThrow(OrdemServicoNaoEncontradaException::new);
-        ordemServico.moverAguardandoAprovacao();
+        ordemServico.moverParaAguardandoAprovacao();
         this.ordemServicoGateway.salvar(ordemServico);
 
         this.enviarEmail(ordemServico);

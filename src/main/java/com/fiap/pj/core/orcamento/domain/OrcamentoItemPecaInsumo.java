@@ -28,4 +28,9 @@ public class OrcamentoItemPecaInsumo {
         this.valorUnitario = requireNonNull(valorUnitario);
         this.quantidade = requireNonNull(quantidade);
     }
+
+
+    public BigDecimal valorTotal() {
+        return this.getValorUnitario().multiply(BigDecimal.valueOf(quantidade));
+    }
 }

@@ -1,0 +1,8 @@
+package com.fiap.pj.infra.util.security;
+
+import java.util.UUID;
+
+public record AuthenticatedUser(
+        UUID userId
+) {
+}
