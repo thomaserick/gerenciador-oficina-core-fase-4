@@ -7,6 +7,8 @@
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-1.27+-blue?logo=kubernetes)](https://kubernetes.io/)
 [![AWS](https://img.shields.io/badge/AWS-EKS-orange?logo=amazon-aws)](https://aws.amazon.com/eks/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automation-black?logo=githubactions)](https://github.com/thomaserick/gerenciador-oficina-core-fase-2/actions/workflows/pipeline.yml)
+[![New Relic](https://img.shields.io/badge/New_Relic-Monitoring-red?logo=newrelic)](https://newrelic.com/)
+[![SonarQube](https://img.shields.io/badge/SonarQube-Quality_Gate-green?logo=sonarqube)](https://sonarcloud.io/dashboard?id=CaioMC_gerenciador-oficina-core)
 
 API para gerenciamento de uma oficina com autenticação e controle de estoque.
 
