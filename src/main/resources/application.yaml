@@ -110,6 +110,7 @@ broker:
     email: default.email
     pagamento:
       autorizado: default.pagamento.autorizado
+      naoautorizado: default.pagamento.nao-autorizado
       processar: default.pagamento.processar
 
 

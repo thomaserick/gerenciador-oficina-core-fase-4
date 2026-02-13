@@ -139,12 +139,16 @@ public class OrdemServico {
         if (!FINALIZADA.equals(this.status)) {
             throw new OrdemServicoStatusInvalidoFinalizadaException();
         }
-        this.pagamentoStatus = PagamentoStatus.PROCESSANDO;
+        atualizarStatusPagamento(PagamentoStatus.PROCESSANDO);
     }
 
     public BigDecimal getValorTotal() {
         return this.getOrcamentos().stream()
                 .map(Orcamento::getValorTotal)
                 .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+    }
+
+    public void atualizarStatusPagamento(PagamentoStatus pagamentoStatus) {
+        this.pagamentoStatus = pagamentoStatus;
     }
 }
