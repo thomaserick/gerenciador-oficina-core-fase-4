@@ -70,16 +70,6 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
-            - name: SPRING_MAIL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: smtp-credentials
-                  key: username
-            - name: SPRING_MAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: smtp-credentials
-                  key: password
             - name: NEW_RELIC_LICENSE_KEY
               valueFrom:
                 secretKeyRef:
