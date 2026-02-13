@@ -149,14 +149,10 @@ jobs:
             --output text)
           sed -i "s|{{RDS_ENDPOINT}}|$RDS_ENDPOINT|g" ./devops/k8s/prod/configmap.yaml
 
-      - name: Substituir variáveis do Secret SMTP / NewRelic
+      - name: Substituir variáveis do  NewRelic
         env:
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
-          sed -i "s|\${SMTP_USERNAME}|${SMTP_USERNAME}|g" ./devops/k8s/prod/smtp-secret.yaml
-          sed -i "s|\${SMTP_PASSWORD}|${SMTP_PASSWORD}|g" ./devops/k8s/prod/smtp-secret.yaml
           sed -i "s|\${NEW_RELIC_LICENSE_KEY}|${NEW_RELIC_LICENSE_KEY}|g" ./devops/k8s/prod/newrelic-secret.yaml
 
       # 🔹 Deploy no Kubernetes
