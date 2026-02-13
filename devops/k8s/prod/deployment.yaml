@@ -23,11 +23,11 @@ spec:
           image: "docker.io/thomaserick/gerenciador-oficina-core:latest"
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "200m"
-            limits:
-              memory: "512Mi"
+              memory: "384Mi"
               cpu: "400m"
+            limits:
+              memory: "768Mi"
+              cpu: "800m"
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
