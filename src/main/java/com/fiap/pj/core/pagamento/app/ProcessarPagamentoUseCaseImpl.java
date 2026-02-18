@@ -26,13 +26,20 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase 
     public void handle(ProcessarPagamentoRequest request) {
         OrdemServico ordemServico = this.ordemServicoGateway.buscarPorId(request.ordemServicoId()).orElseThrow(OrdemServicoNaoEncontradaException::new);
         ordemServico.processarPagamento();
+
         this.ordemServicoGateway.salvar(ordemServico);
 
-        var event = new PagamentoProcessadoEvent(ordemServico.getId(), ordemServico.getClienteId(), ordemServico.getValorTotal(),
-                BigDecimal.ZERO, ordemServico.getValorTotal(), request.metodoPagamento(), request.quantidadeParcelas(),
-                SecurityContextUtils.getUsuarioId());
+        var event = new PagamentoProcessadoEvent(
+                ordemServico.getId(),
+                ordemServico.getClienteId(),
+                ordemServico.getValorTotal(),
+                BigDecimal.ZERO,
+                ordemServico.getValorTotal(),
+                request.metodoPagamento(),
+                request.quantidadeParcelas(),
+                SecurityContextUtils.getUsuarioId()
+        );
 
         pagamentoPublisherGateway.processar(event);
-
     }
 }
