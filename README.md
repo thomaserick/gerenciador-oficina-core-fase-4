@@ -77,7 +77,7 @@ em um repositório separado para facilitar a manutenção e o CI/CD.
 
 ## 📝 Diagramas Tecnicos
 
-![Diagrama de Componente](docs/assets/diagrama_componente.jpg)
+![Diagrama de Componente](docs/assets/diagrama_componente.png)
 ![Diagrama de Cadastro Usuario](docs/assets/diagrama_sequencia_cadastro_usuario.jpg)
 ![Diagrama de Autenticacao](docs/assets/diagrama_sequencia_autenticacao.jpg)
 ![Diagrama de Ordem de Servico](docs/assets/diagram_sequencia_abertura_ordem_servico.jpg)
@@ -457,13 +457,17 @@ utilizar o endpoint `/usuarios`.
 
 ## 📚 Documentação da API
 
-### [Swagger](http://localhost:8081/swagger-ui/index.html)
+### [▶️ Swagger](http://localhost:8081/swagger-ui/index.html)
 
-## 📚 Documentação DDD
+## 📚 Documentação Extra
 
-### [EventStorming](https://miro.com/app/board/uXjVIhTYiq8=/?share_link_id=963111040580)
+### [▶️ EventStorming](https://miro.com/app/board/uXjVIhTYiq8=/?share_link_id=963111040580)
 
-### [Diagrama](https://drive.google.com/file/d/1gpGtB9AUglij6xUx8oZw5JVPN-rvoWDh/view)
+### [▶️ Diagrama](https://drive.google.com/file/d/1gpGtB9AUglij6xUx8oZw5JVPN-rvoWDh/view)
 
-### [Imagem no Docker-Hub](https://hub.docker.com/r/thomaserick/gerenciador-oficina-core)
+### [▶️ Imagem no Docker-Hub](https://hub.docker.com/r/thomaserick/gerenciador-oficina-core)
+
+### [▶️ ADR-Documentation](docs/assets/ADR-Documentation.pdf)
+
+### [▶️ BDD-Documentation](docs/assets/BDD-Documentation.pdf)
 
