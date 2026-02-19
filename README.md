@@ -82,6 +82,7 @@ em um repositório separado para facilitar a manutenção e o CI/CD.
 ![Diagrama de Autenticacao](docs/assets/diagrama_sequencia_autenticacao.jpg)
 ![Diagrama de Ordem de Servico](docs/assets/diagram_sequencia_abertura_ordem_servico.jpg)
 ![Diagrama de Entidade Realacionamento](docs/assets/diagrama_entidade_relacionamento.jpg)
+![Diagrama de Saga Coreografado](docs/assets/saga_coreografado.png)
 
 ### 1. Justificativa da Divisão
 
