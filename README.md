@@ -83,6 +83,28 @@ em um repositório separado para facilitar a manutenção e o CI/CD.
 ![Diagrama de Ordem de Servico](docs/assets/diagram_sequencia_abertura_ordem_servico.jpg)
 ![Diagrama de Entidade Realacionamento](docs/assets/diagrama_entidade_relacionamento.jpg)
 
+### 1. Justificativa da Divisão
+
+A arquitetura foi separada para isolar domínios de negócio com características e requisitos operacionais diferentes:
+
+- **Gerenciador-Core**: Concentra a inteligência de negócio da oficina (clientes, veículos, ordens de serviço). É o coração do sistema e possui alta complexidade transacional com o banco de dados relacional (RDS).
+
+- **Gerenciador-Notificacao**: É um serviço de infraestrutura de apoio. Sua única responsabilidade é garantir que a comunicação com o cliente ocorra. Ele não deve impactar o fluxo principal se houver instabilidade em provedores de e-mail.
+
+- **Gerenciador-Pagamento**: Lida com um domínio sensível e crítico: integração financeira. Ao isolá-lo, garantimos que regras de conformidade e integrações externas (Mercado Pago) fiquem restritas a um único componente.
+
+### 2. Benefícios da Abordagem
+
+| Benefício | Descrição |
+|-----------|-----------|
+| **Escalabilidade Independente** | Se houver um pico de pagamentos ou envio massivo de e-mails, podemos escalar apenas esses serviços no Kubernetes (EKS), sem precisar aumentar os recursos do Core. |
+| **Resiliência e Desacoplamento** | Graças ao RabbitMQ, se o serviço de Notificação estiver fora do ar, o Core continua funcionando. As mensagens ficam na fila e são processadas assim que o serviço retornar, sem perda de dados. |
+| **Evolução Tecnológica** | Cada serviço pode evoluir de forma independente. O serviço de Pagamento utiliza DynamoDB (NoSQL), que é ideal para logs de transações, enquanto o Core usa PostgreSQL (Relacional) para consistência de dados. |
+| **Facilidade de Manutenção** | Times diferentes podem trabalhar em repositórios diferentes sem causar conflitos de código (merge conflicts), acelerando o ciclo de entrega (CI/CD). |
+| **Isolamento de Falhas** | Um erro crítico no processamento de um pagamento ou no envio de um e-mail não "derruba" a API principal da oficina, mantendo o sistema disponível para consultas e abertura de ordens. |
+
+> 💡 Essa estrutura transforma um sistema que poderia ser um "monolito frágil" em uma plataforma distribuída, preparada para alta carga e fácil manutenção.
+
 ## 🚀 Arquitetura
 
 | Clean Architecture                                  |
