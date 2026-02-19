@@ -45,7 +45,7 @@ em um repositório separado para facilitar a manutenção e o CI/CD.
 
 ### 🎬 Vídeos de Demonstração
 
-### [Desafio - Apresentação - VISAO GERAL - ](https://www.loom.com/share/0e823298255f45729e87a1921cb427e2)
+### [VISAO GERAL](https://www.loom.com/share/0e823298255f45729e87a1921cb427e2)
 
 ### [Execução da Ordem de Serviço e Processamento de Pagamento](https://www.loom.com/share/47fd23ee2c794043acf8ac90bd500b9d)
 
