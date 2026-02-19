@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import org.mockito.MockedStatic;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,40 +48,64 @@ class ProcessarPagamentoUseCaseImplTest {
         Integer qtdParcelas = 2;
         UUID usuarioId = UUID.randomUUID();
 
-        // stub SecurityContextUtils.getUsuarioId()
-        mockStatic(SecurityContextUtils.class).when(SecurityContextUtils::getUsuarioId).thenReturn(usuarioId);
+        // Dados do cartão
+        String numeroCartao = "4111111111111111";
+        String codigoSeguranca = "123";
+        Integer mesExpiracao = 12;
+        Integer anoExpiracao = 2028;
+        String nomeTitular = "João da Silva";
+        String cpfTitular = "12345678900";
+        String emailTitular = "joao@email.com";
 
-        OrdemServico ordemServico = mock(OrdemServico.class);
-        when(ordemServicoGateway.buscarPorId(ordemServicoId)).thenReturn(Optional.of(ordemServico));
-        when(ordemServico.getId()).thenReturn(ordemServicoId);
-        when(ordemServico.getClienteId()).thenReturn(clienteId);
-        when(ordemServico.getValorTotal()).thenReturn(valorTotal);
+        try (MockedStatic<SecurityContextUtils> mockedStatic = mockStatic(SecurityContextUtils.class)) {
+            mockedStatic.when(SecurityContextUtils::getUsuarioId).thenReturn(usuarioId);
 
-        ProcessarPagamentoRequest request = new ProcessarPagamentoRequest(
-                ordemServicoId,
-                metodoPagamento,
-                qtdParcelas
-        );
+            OrdemServico ordemServico = mock(OrdemServico.class);
+            when(ordemServicoGateway.buscarPorId(ordemServicoId)).thenReturn(Optional.of(ordemServico));
+            when(ordemServico.getId()).thenReturn(ordemServicoId);
+            when(ordemServico.getClienteId()).thenReturn(clienteId);
+            when(ordemServico.getValorTotal()).thenReturn(valorTotal);
 
-        useCase.handle(request);
+            ProcessarPagamentoRequest request = new ProcessarPagamentoRequest(
+                    ordemServicoId,
+                    metodoPagamento,
+                    qtdParcelas,
+                    numeroCartao,
+                    codigoSeguranca,
+                    mesExpiracao,
+                    anoExpiracao,
+                    nomeTitular,
+                    cpfTitular,
+                    emailTitular
+            );
 
-        verify(ordemServicoGateway).buscarPorId(ordemServicoId);
-        verify(ordemServico).processarPagamento();
-        verify(ordemServicoGateway).salvar(ordemServico);
+            useCase.handle(request);
 
-        ArgumentCaptor<PagamentoProcessadoEvent> eventCaptor =
-                ArgumentCaptor.forClass(PagamentoProcessadoEvent.class);
-        verify(pagamentoPublisherGateway).processar(eventCaptor.capture());
+            verify(ordemServicoGateway).buscarPorId(ordemServicoId);
+            verify(ordemServico).processarPagamento();
+            verify(ordemServicoGateway).salvar(ordemServico);
 
-        PagamentoProcessadoEvent event = eventCaptor.getValue();
-        assertEquals(ordemServicoId, event.ordemServicoId());
-        assertEquals(clienteId, event.clienteId());
-        assertEquals(valorTotal, event.valorTotal());
-        assertEquals(BigDecimal.ZERO, event.desconto());
-        assertEquals(valorTotal, event.valor());
-        assertEquals(metodoPagamento, event.metodoPagamento());
-        assertEquals(qtdParcelas, event.quantidadeParcelas());
-        assertEquals(usuarioId, event.usuarioId());
+            ArgumentCaptor<PagamentoProcessadoEvent> eventCaptor =
+                    ArgumentCaptor.forClass(PagamentoProcessadoEvent.class);
+            verify(pagamentoPublisherGateway).processar(eventCaptor.capture());
+
+            PagamentoProcessadoEvent event = eventCaptor.getValue();
+            assertEquals(ordemServicoId, event.ordemServicoId());
+            assertEquals(clienteId, event.clienteId());
+            assertEquals(valorTotal, event.valorTotal());
+            assertEquals(BigDecimal.ZERO, event.desconto());
+            assertEquals(valorTotal, event.valor());
+            assertEquals(metodoPagamento, event.metodoPagamento());
+            assertEquals(qtdParcelas, event.quantidadeParcelas());
+            assertEquals(usuarioId, event.usuarioId());
+            assertEquals(numeroCartao, event.numeroCartao());
+            assertEquals(codigoSeguranca, event.codigoSeguranca());
+            assertEquals(mesExpiracao, event.mesExpiracao());
+            assertEquals(anoExpiracao, event.anoExpiracao());
+            assertEquals(nomeTitular, event.nomeTitular());
+            assertEquals(cpfTitular, event.cpfTitular());
+            assertEquals(emailTitular, event.emailTitular());
+        }
     }
 
     @Test
@@ -88,7 +114,14 @@ class ProcessarPagamentoUseCaseImplTest {
         ProcessarPagamentoRequest request = new ProcessarPagamentoRequest(
                 ordemServicoId,
                 MetodoPagamento.CARTAO_DEBITO,
-                1
+                1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
         );
 
         when(ordemServicoGateway.buscarPorId(ordemServicoId)).thenReturn(Optional.empty());

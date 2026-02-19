@@ -5,14 +5,32 @@ import com.fiap.pj.core.pagamento.domain.enums.MetodoPagamento;
 
 import java.util.UUID;
 
-public record ProcessarPagamentoRequest(@JsonIgnore
-                                        UUID ordemServicoId,
-                                        MetodoPagamento metodoPagamento,
-                                        Integer quantidadeParcelas
+public record ProcessarPagamentoRequest(
+        @JsonIgnore UUID ordemServicoId,
+        MetodoPagamento metodoPagamento,
+        Integer quantidadeParcelas,
+        String numeroCartao,
+        String codigoSeguranca,
+        Integer mesExpiracao,
+        Integer anoExpiracao,
+        String nomeTitular,
+        String cpfTitular,
+        String emailTitular
 ) {
 
     public ProcessarPagamentoRequest comOrdemServicoId(UUID ordemServicoId) {
-        return new ProcessarPagamentoRequest(ordemServicoId, this.metodoPagamento, this.quantidadeParcelas);
+        return new ProcessarPagamentoRequest(
+                ordemServicoId,
+                this.metodoPagamento,
+                this.quantidadeParcelas,
+                this.numeroCartao,
+                this.codigoSeguranca,
+                this.mesExpiracao,
+                this.anoExpiracao,
+                this.nomeTitular,
+                this.cpfTitular,
+                this.emailTitular
+        );
     }
 
 }

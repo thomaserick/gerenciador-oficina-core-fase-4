@@ -23,7 +23,7 @@ public class PagamentoController implements PagamentoControllerOpenApi {
     @Override
     @PostMapping
     public ResponseEntity<Void> processarPagamento(UUID id, ProcessarPagamentoRequest request) {
-        processarPagamentoUseCase.handle(request.comOrdemServicoId(id));
+        this.processarPagamentoUseCase.handle(request.comOrdemServicoId(id));
         return ResponseEntity.accepted().build();
     }
 }

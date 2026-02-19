@@ -37,9 +37,16 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase 
                 ordemServico.getValorTotal(),
                 request.metodoPagamento(),
                 request.quantidadeParcelas(),
-                SecurityContextUtils.getUsuarioId()
+                SecurityContextUtils.getUsuarioId(),
+                request.numeroCartao(),
+                request.codigoSeguranca(),
+                request.mesExpiracao(),
+                request.anoExpiracao(),
+                request.nomeTitular(),
+                request.cpfTitular(),
+                request.emailTitular()
         );
 
-        pagamentoPublisherGateway.processar(event);
+        this.pagamentoPublisherGateway.processar(event);
     }
 }
