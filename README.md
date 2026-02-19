@@ -41,7 +41,7 @@ em um repositório separado para facilitar a manutenção e o CI/CD.
 - [Instalação Aws](#-instalação-Aws)
 - [Autenticação](#-autenticação)
 - [Documentação APIs](#-documentação-da-api)
-- [Documentação DDD](#-documentação-ddd)
+- [Documentação Extra](#-documentação-extra)
 
 ### 🎬 Vídeos de Demonstração
 
